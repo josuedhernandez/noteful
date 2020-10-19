@@ -2,15 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import NotefulContext from "../NotefulContext";
+import ApiContext from "../ApiContext";
 import config from "../config";
+import PropTypes from 'prop-types';
 import "./Note.css";
 
 export default class Note extends React.Component {
   static defaultProps = {
     onDeleteNote: () => {},
   };
-  static contextType = NotefulContext;
+  static contextType = ApiContext;
 
   handleClickDelete = (e) => {
     e.preventDefault();
@@ -35,6 +36,7 @@ export default class Note extends React.Component {
         console.error({ error });
       });
   };
+
   render() {
     const { name, id, modified } = this.props;
     return (
@@ -52,12 +54,16 @@ export default class Note extends React.Component {
         <div className="Note__dates">
           <div className="Note__dates-modified">
             Modified{" "}
-            <span className="Date">
-              {format(modified, "Do MMM YYYY")}
-            </span>
+            <span className="Date">{format(modified, "Do MMM YYYY")}</span>
           </div>
         </div>
       </div>
     );
   }
+}
+
+Note.propTypes = {
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  modified: PropTypes.string.isRequired
 }
